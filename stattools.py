@@ -1,0 +1,156 @@
+# -*- coding: utf-8 -*-
+"""
+Spyder Editor
+
+This is a temporary script file.
+"""
+
+
+import numpy as np
+import random as rnd
+import math as math
+import scipy
+import matplotlib.pyplot as p
+
+# function for the sample mean of a list
+def mean(x):
+    return sum(x)/len(x)
+
+
+# function for the sample variance of a list
+def var(x):
+    n=len(x)
+    div=float(1/(n-1))
+    errors=[float((i - mean(x))**2) for i in x]
+    return div*sum(errors)
+
+#function for scaling and centering data
+def scale(X, center=True):
+    import math as math
+    if center == True:
+        Z=[i-mean(X) for i in X]
+        Z=[i/math.sqrt(var(X)) for i in Z]
+    else:
+        Z=[i/math.sqrt(var(X)) for i in Z]    
+    return Z
+
+#functio to simulate normal RV's. Simulates two IID normal RV's using the 
+#Box-Muller transformation
+def simnormal(n, mu=0, sigma=1):
+    import random as rand
+    import math 
+    y=[1]*n
+    x=[1]*n
+    yy=[i*rand.uniform(0,1) for i in y]
+    xx=[i*rand.uniform(0,1) for i in x]
+    a=[math.sqrt(-2*math.log(i))*math.cos(2*math.pi*j) for i,j in zip(yy,xx) ]
+    b=[math.sqrt(-2*math.log(i))*math.sin(2*math.pi*j) for i,j in zip(yy,xx) ]
+    c=[sigma*i+mu for i in a]
+    d=[sigma*j+mu for j in b]
+    return [c,d]
+
+
+#function to simulate exponential RV's. Simulates exponential Random Variables 
+#using the inverse CDF method
+def simexp(n, lamb=1):
+    import random as rand
+    import math 
+    x=[1]*n
+    U=[i*rand.uniform(0,1) for i in x]
+    E=[(-1*math.log(1-i))/lamb for i in U]
+    return E
+
+
+#a function to simulate Chi-Squared Random Variables (RV's). It will simulate 
+#independent RV's from a normal RV such that if X_i~N(0,1)
+#then Y_i=sum[x_i^2] from i =1 to n, then Y_i ~ Chi(n). 
+def simChisq(n, df=1):
+    sample=[1]*n
+    for k in range(n):
+        x=simnormal(df)
+        z=[i**2 for i in x[0]]
+        chi=sum(z)
+        sample[k]=chi
+    return sample
+    
+#a function to simulate F random variables from the ratio of two independent
+#Chi-squared RV's with v1 and v2 degrees of freedom
+def simF(n, V1=1, V2=1):
+    for k in range(n):
+        chi1=simChisq(n, df=V1)
+        chi2=simChisq(n, df=V2)
+        F=[(i/V1)/(j/V2) for i,j in zip(chi1,chi2)]
+    return F
+
+#a function to simulate RV's from students t distribution with desired degrees 
+#of freedom
+def simt(n, df=10):
+    import math as m
+    nn=df+1
+    sample=[1]*n
+    for k in range(n):
+        X=simnormal(nn)
+        muhat=mean(X[0])
+        sighat=var(X[0])
+        sample[k]=(muhat)/(m.sqrt(sighat)/m.sqrt(nn))
+    return sample
+
+#a function to calculate the CDF probability of a given value from students t
+#distribution using Monte Carlo Integration
+def probt(t, df):
+    n=100
+    b=100
+    p_list=[1]*b
+    for k in range(b):
+        T=simt(n, df=df)
+        p_list[k]=sum([i<=t for i in T])/n
+    prob=mean(p_list)
+    return round(prob, ndigits=5)
+
+#a function to calculate the CDF probability of a given value from the F 
+#distribution using Monte Carlo Integration 
+def probf(f, df1, df2):
+    n=100
+    b=100
+    p_list=[1]*b
+    for k in range(b):
+        F=simF(n, V1=df1, V2=df2)
+        p_list[k]=sum([i<=f for i in F])/n
+    prob=mean(p_list)
+    return round(prob, ndigits=5)
+
+#a function to calculate the CDF probability of a given value from the normal 
+#distribution using Monte Carlo Integration 
+def probnorm(x, mu=0, sigma=1):
+    n=1000
+    b=100
+    p_list=[1]*b
+    for k in range(b):
+        Z=simnormal(n, mu=mu, sigma=sigma)
+        p_list[k]=sum([i<=x for i in Z[0]])/n
+    prob=mean(p_list)
+    return round(prob, ndigits=5)
+
+#a function to calculate the CDF probability of a given value from the 
+#Exponential distribution using Monte Carlo Integration 
+def probexp(x, lam=1):
+    n=1000
+    b=100
+    p_list=[1]*b
+    for k in range(b):
+        E=simexp(n, lamb=lam)
+        p_list[k]=sum([i<=x for i in E])/n
+    prob=mean(p_list)
+    return round(prob, ndigits=5)
+
+#a function to calculate the CDF probability of a given value from the 
+#Chi-Squared distribution using Monte Carlo Integration
+def probchi(x, df=1):
+    n=1000
+    b=100
+    p_list=[1]*b
+    for k in range(b):
+        E=simChisq(n, df=df)
+        p_list[k]=sum([i<=x for i in E])/n
+    prob=mean(p_list)
+    return round(prob, ndigits=5)
