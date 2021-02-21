@@ -10,12 +10,99 @@ import numpy as np
 import random as rnd
 import math as math
 import scipy
-import matplotlib.pyplot as p
+import matplotlib.pyplot as plot
 
+
+#=============================================================================
 # function for the sample mean of a list
 def mean(x):
     return sum(x)/len(x)
 
+#=============================================================================
+#Simple function to quickly generate sequences ranging from 0:n
+def easySeq(n):
+    seq=[1]*n
+    for i in range(n):
+        seq[i]=i
+        i+=1
+    return(seq)
+#=============================================================================
+#calculates the distance between rows (d=1) or columns(d!=1) of the numeric array 'x' 
+#using one of euclidean, manhattan, or minkowski distance. For the minkowski 
+#there is the option to specify q (the power parameter).
+def dist(x, d=1, method="euclidean", q=3):
+    nrows=x.shape[0]
+    ncols=x.shape[1]
+    
+    if d==1:
+        d=[float(1)]*(nrows**2)
+        d=np.array(d)
+        d=d.reshape((nrows,nrows))
+        i_its=easySeq(nrows)
+        j_its=easySeq(nrows)
+        
+        if method=="euclidean":
+            p=2
+            
+            for i in i_its:
+        
+                for j in j_its:
+            
+                    d[i][j] = sum(abs(x[i][:]-x[j][:])**p)**(1/p)
+                
+        if method=="manhattan":
+            p=1
+            
+            for i in i_its:
+        
+                for j in j_its:
+            
+                    d[i][j] = sum(abs(x[i][:]-x[j][:])**p)**(1/p)
+                    
+        if method=="minkowski":
+            
+            for i in i_its:
+        
+                for j in j_its:
+            
+                    d[i][j] = sum(abs(x[i][:]-x[j][:])**q)**(1/q)
+            
+                
+    else:
+        d=[float(1)]*(ncols**2)
+        d=np.array(d)
+        d=d.reshape((ncols,ncols))
+        i_its=easySeq(ncols)
+        j_its=easySeq(ncols)
+        
+        if method=="euclidean":
+            p=2
+            
+            for i in i_its:
+        
+                for j in j_its:
+            
+                    d[i][j] = sum(abs(x[i][:]-x[j][:])**p)**(1/p)
+                
+        if method=="manhattan":
+            p=1
+            
+            for i in i_its:
+        
+                for j in j_its:
+            
+                    d[i][j] = sum(abs(x[i][:]-x[j][:])**p)**(1/p)
+                    
+        if method=="minkowski":
+            
+            for i in i_its:
+        
+                for j in j_its:
+            
+                    d[i][j] = sum(abs(x[i][:]-x[j][:])**q)**(1/q)
+                
+    return d
+#=============================================================================
 
 # function for the sample variance of a list
 def var(x):
@@ -24,16 +111,19 @@ def var(x):
     errors=[float((i - mean(x))**2) for i in x]
     return div*sum(errors)
 
+#=============================================================================
 #function for scaling and centering data
 def scale(X, center=True):
-    import math as math
+    
     if center == True:
         Z=[i-mean(X) for i in X]
         Z=[i/math.sqrt(var(X)) for i in Z]
+        
     else:
         Z=[i/math.sqrt(var(X)) for i in Z]    
     return Z
 
+#=============================================================================
 #functio to simulate normal RV's. Simulates two IID normal RV's using the 
 #Box-Muller transformation
 def simnormal(n, mu=0, sigma=1):
@@ -49,7 +139,7 @@ def simnormal(n, mu=0, sigma=1):
     d=[sigma*j+mu for j in b]
     return [c,d]
 
-
+#=============================================================================
 #function to simulate exponential RV's. Simulates exponential Random Variables 
 #using the inverse CDF method
 def simexp(n, lamb=1):
@@ -60,7 +150,7 @@ def simexp(n, lamb=1):
     E=[(-1*math.log(1-i))/lamb for i in U]
     return E
 
-
+#=============================================================================
 #a function to simulate Chi-Squared Random Variables (RV's). It will simulate 
 #independent RV's from a normal RV such that if X_i~N(0,1)
 #then Y_i=sum[x_i^2] from i =1 to n, then Y_i ~ Chi(n). 
@@ -72,7 +162,8 @@ def simChisq(n, df=1):
         chi=sum(z)
         sample[k]=chi
     return sample
-    
+
+#=============================================================================
 #a function to simulate F random variables from the ratio of two independent
 #Chi-squared RV's with v1 and v2 degrees of freedom
 def simF(n, V1=1, V2=1):
@@ -82,7 +173,8 @@ def simF(n, V1=1, V2=1):
         F=[(i/V1)/(j/V2) for i,j in zip(chi1,chi2)]
     return F
 
-#a function to simulate RV's from students t distribution with desired degrees 
+#=============================================================================
+#a function to simulate RV's from students t-distribution with desired degrees 
 #of freedom
 def simt(n, df=10):
     import math as m
@@ -95,6 +187,7 @@ def simt(n, df=10):
         sample[k]=(muhat)/(m.sqrt(sighat)/m.sqrt(nn))
     return sample
 
+#=============================================================================
 #a function to calculate the CDF probability of a given value from students t
 #distribution using Monte Carlo Integration
 def probt(t, df):
@@ -107,6 +200,7 @@ def probt(t, df):
     prob=mean(p_list)
     return round(prob, ndigits=5)
 
+#=============================================================================
 #a function to calculate the CDF probability of a given value from the F 
 #distribution using Monte Carlo Integration 
 def probf(f, df1, df2):
@@ -119,6 +213,7 @@ def probf(f, df1, df2):
     prob=mean(p_list)
     return round(prob, ndigits=5)
 
+#=============================================================================
 #a function to calculate the CDF probability of a given value from the normal 
 #distribution using Monte Carlo Integration 
 def probnorm(x, mu=0, sigma=1):
@@ -131,6 +226,7 @@ def probnorm(x, mu=0, sigma=1):
     prob=mean(p_list)
     return round(prob, ndigits=5)
 
+#=============================================================================
 #a function to calculate the CDF probability of a given value from the 
 #Exponential distribution using Monte Carlo Integration 
 def probexp(x, lam=1):
@@ -143,6 +239,7 @@ def probexp(x, lam=1):
     prob=mean(p_list)
     return round(prob, ndigits=5)
 
+#=============================================================================
 #a function to calculate the CDF probability of a given value from the 
 #Chi-Squared distribution using Monte Carlo Integration
 def probchi(x, df=1):
@@ -154,3 +251,26 @@ def probchi(x, df=1):
         p_list[k]=sum([i<=x for i in E])/n
     prob=mean(p_list)
     return round(prob, ndigits=5)
+
+#=============================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
