@@ -2,7 +2,7 @@
 """
 Created on Sat Feb 20 00:03:28 2021
 
-@author: Bruin
+@author: Jarred M. Kvamme
 """
 
 #make a pretend dataset
