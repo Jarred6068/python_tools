@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Spyder Editor
+Created 2/10/21
 
-This is a temporary script file.
+@author: Jarred M. Kvamme
 """
 
 
