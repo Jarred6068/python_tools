@@ -32,3 +32,29 @@ knn1.predict()
 knn1.predictedLabel
 knn1.predictedValue
 knn1.probabilities
+
+
+#Example using Iris from skLearn
+import sklearn.datasets as ds
+
+iris = ds.load_iris()
+dir(iris)
+
+data = iris['data']
+print('data', data.shape)
+
+targets = iris['target']
+print('targets', targets.shape)
+#convert targets from array to character list
+targets=targets.tolist()
+ind=st.easySeq(len(targets))
+targets=[str(targets[i]) for i in ind]
+
+knn2=KNN(K_neighbors=10)
+knn2.fit(targets, data, split=0.5)
+knn2.predict()
+
+knn2.predictedLabel
+knn2.predictedValue
+knn2.probabilities
+
