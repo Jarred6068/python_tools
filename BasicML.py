@@ -116,8 +116,15 @@ class KNN:
         #save properties to object
         self.probabilities=probabilities
         self.predictedLabel=predictedLabel
-            
-            
+    
+    def performance():
+        self.ConfusionMatrix=st.crosstab(self.predictedLabel, self.trainLabels)
+        total=sum(np.sum(self.ConfusionMatrix, axis=0))
+        correct=sum(np.diag(self.ConfusionMatrix))
+        self.Error=1-(correct/total)
+        observed=1-self.Error
+        expected=sum( ()*() )
+        self.Kappa=
             
             
             

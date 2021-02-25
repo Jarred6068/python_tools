@@ -124,6 +124,70 @@ def scale(X, center=True):
     return Z
 
 #=============================================================================
+# a function for cross tabulating two lists with a and b levels respectively:
+
+def crosstab(X, Y):
+    
+    if not len(X)==len(Y):
+        print("ERROR: all arguments must be same length")
+        
+    if not type(X) == list: 
+        print("Warning: X is not a list:","type(X)=", type(X))
+    
+    if not type(Y) == list:
+        print("Warning: Y is not a list:","type(Y)=", type(Y))
+    
+    nrows=len(X)
+    a=list(set(X))
+    b=list(set(Y))
+    
+    a.sort()
+    b.sort()
+    print(a, b)
+    
+    numfactors=[len(a), len(b)]
+    
+    
+    if np.argsort(numfactors)[0]==0:
+        table=[1]*(len(b))
+        store2=[1]*len(a)
+        
+        for i in easySeq(len(b)):
+            
+            for j in easySeq(len(a)):
+                store1=[]
+                for k in easySeq(nrows):
+                    
+                    if X[k]==a[j] and Y[k]==b[i]:
+                        store1.append(1)
+                        
+                print(store1)
+                store2[j]=len(store1)
+            table[i]=list(store2)
+                
+                
+    else:
+        table=[1]*(len(a))
+        store2=[1]*len(b)
+        
+        for i in easySeq(len(a)):
+            
+            for j in easySeq(len(b)):
+                store1=[]
+                
+                for k in easySeq(nrows):
+                    
+                    if X[k]==a[i] and Y[k]==b[j]:
+                        store1.append(1)
+                
+                print(store1)        
+                store2[j] = len(store1)
+            table[i]=list(store2)
+            
+    return np.array(table)
+
+
+#=============================================================================
 #functio to simulate normal RV's. Simulates two IID normal RV's using the 
 #Box-Muller transformation
 def simnormal(n, mu=0, sigma=1):

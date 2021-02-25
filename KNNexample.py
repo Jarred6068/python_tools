@@ -2,14 +2,15 @@
 """
 Created on Sat Feb 20 00:03:28 2021
 
-@author: Jarred M. Kvamme
+@author: Bruin
 """
 
-#make a pretend dataset
+
 import random as rnd
 import stattools as st
 import numpy as np
 
+#make a pretend dataset
 L=['a']*100+['b']*100+['c']*100
 L
 labels=rnd.sample(L, 100)
@@ -21,7 +22,7 @@ J=np.array(J)
 J.shape
 J=J.transpose()
 
-
+#import KNN
 from BasicML import KNN
 
 knn1=KNN()
@@ -57,4 +58,13 @@ knn2.predict()
 knn2.predictedLabel
 knn2.predictedValue
 knn2.probabilities
+
+
+
+
+
+
+
+
+
 
