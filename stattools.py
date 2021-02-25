@@ -143,7 +143,6 @@ def crosstab(X, Y):
     
     a.sort()
     b.sort()
-    print(a, b)
     
     numfactors=[len(a), len(b)]
     
@@ -161,7 +160,6 @@ def crosstab(X, Y):
                     if X[k]==a[j] and Y[k]==b[i]:
                         store1.append(1)
                         
-                print(store1)
                 store2[j]=len(store1)
             table[i]=list(store2)
                 
@@ -179,8 +177,7 @@ def crosstab(X, Y):
                     
                     if X[k]==a[i] and Y[k]==b[j]:
                         store1.append(1)
-                
-                print(store1)        
+                      
                 store2[j] = len(store1)
             table[i]=list(store2)
             

@@ -17,8 +17,7 @@ class KNN:
     """with choice of distance metric"""
     
     def __init__(self, K_neighbors=5):
-        """Two input variables are: the number of neighbors considered"""
-        """ the type of distance metric used"""
+        """input variable: the number of neighbors considered"""
         
         #save property
         self.K=K_neighbors
@@ -117,16 +116,37 @@ class KNN:
         self.probabilities=probabilities
         self.predictedLabel=predictedLabel
     
-    def performance():
-        self.ConfusionMatrix=st.crosstab(self.predictedLabel, self.trainLabels)
+    def performance(self):
+        #obtain the confusion matrix using stattools
+        self.ConfusionMatrix=st.crosstab(self.predictedLabel, self.testLabels)
+        
+        #get total, rowsums, colsums, and correct predictions (diagonals)
         total=sum(np.sum(self.ConfusionMatrix, axis=0))
+        rowsum=np.sum(self.ConfusionMatrix, axis=1)
+        colsum=np.sum(self.ConfusionMatrix, axis=0)
         correct=sum(np.diag(self.ConfusionMatrix))
+        
+        #calculate ERROR
         self.Error=1-(correct/total)
+        
+        #calc observed expected and cohens kappa coefficient
         observed=1-self.Error
-        expected=sum( ()*() )
-        self.Kappa=
+        expected=sum( (rowsum/total)*(colsum/total) )
+        self.Kappa=(observed-expected)/(1-expected)
             
-            
+#Regression Algorithm
+class Reg():
+    """implementation of Regression"""
+    """Continuous Prediction Procedure:"""
+    
+    def __init__(self, data):
+        """ initialization of data attributes in "data" """
+        """ data should be a list or numpy.array() """
+        
+        
+        
+        
+        
             
             
             

@@ -37,7 +37,7 @@ knn1.probabilities
 
 #Example using Iris from skLearn
 import sklearn.datasets as ds
-
+from BasicML import KNN
 iris = ds.load_iris()
 dir(iris)
 
@@ -58,7 +58,10 @@ knn2.predict()
 knn2.predictedLabel
 knn2.predictedValue
 knn2.probabilities
+knn2.performance()
 
+knn2.Kappa
+knn2.Error
 
 
 
