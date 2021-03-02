@@ -185,7 +185,7 @@ def crosstab(X, Y):
 
 #=============================================================================
 #function to create a dummy/sparse-matrix representing the unique levels in 
-#the factor F. F must be a list
+#the factor F. F must be a list -- supports model_matrix function
 def dummy(F):
     if(type(F)!=list):
         print("ERROR: input must be a list!")
@@ -210,8 +210,8 @@ def dummy(F):
 #function to create a design matrix for a set of K factors and numeric variables
 #stored in the array X (i.e: a matrix of explanatory variables). The indices of 
 #each factor must be provided in list format. The 'interactions' is a logical
-#option to provide the design matrix for all possible interactions within the 
-#set explanatory variables
+#option to provide the exhaustive design matrix for all possible interactions 
+#within the set explanatory variables
 
 def model_matrix(X, factor_indexes, interactions=True):
     if type(X)==list:
