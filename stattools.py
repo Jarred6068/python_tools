@@ -191,20 +191,74 @@ def dummy(F):
         print("ERROR: input must be a list!")
         
     levels=list(set(F))
+    #print(levels)
     L=[1]*(len(F)*len(levels))
     L=np.array(L).reshape((len(F),len(levels)))
     
     for j in easySeq(len(levels)):
         
         for i in easySeq(len(F)):
-            
-            if L[i,j]==levels[j]:
+                
+            if F[i]==levels[j]:
                 L[i,j]=1
             else:
                 L[i,j]=0
                 
     return L
 
+#=============================================================================
+#function to create a design matrix for a set of K factors or numeric variables
+#stored in the array X (a matrix of explanatory variables)
+def model_matrix(X, factor_indexes, interactions=True):
+    if type(X)==list:
+        print("ERROR: X must be of type numpy.ndarray")
+        
+    Xt=X.transpose().tolist()
+    idx=easySeq(X.shape[1])
+    [idx.pop(i) for i in factor_indexes]
+    
+    if len(factor_indexes)==1:
+        MM=[[1]*len(Xt[0])]
+        factor=Xt[factor_indexes[0]]
+        dummies=dummy(factor)
+        dims=dummies.shape
+        keepers=easySeq(dims[1]-1)
+        #print(keepers)
+        dummies=dummies[:,keepers].transpose().tolist()
+        #print(dummies)
+        MM=MM+dummies
+        #print(MM)
+        
+    else:
+        MM=[[1]*len(Xt[0])]
+        for i in factor_indexes:
+            factor=Xt[i]
+            dummies=dummy(factor)
+            dims=dummies.shape
+            keepers=easySeq(dims[1]-1)
+            dummies=dummies[:,keepers].transpose().tolist()
+            MM=MM+dummies
+            
+        print(dummies)
+ 
+    Xp=list(Xt)
+    MM.pop(0)
+    [Xp.pop(i) for i in factor_indexes]
+    [Xp.append(MM[i]) for i in easySeq(len(MM))]
+    intercept=[[1]*len(Xt[0])]
+    Xp=intercept+Xp
+    
+    numerics=X[:,idx].transpose().tolist()
+    #print(numerics)
+    print(MM)
+    vec=[[0]*len(Xt[0])]
+    for i in easySeq(len(numerics)):
+        
+        for j in easySeq(len(MM)):
+            
+            vec[]
+    
+        
 
 #=============================================================================
 #functio to simulate normal RV's. Simulates two IID normal RV's using the 
