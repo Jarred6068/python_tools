@@ -207,8 +207,12 @@ def dummy(F):
     return L
 
 #=============================================================================
-#function to create a design matrix for a set of K factors or numeric variables
-#stored in the array X (a matrix of explanatory variables)
+#function to create a design matrix for a set of K factors and numeric variables
+#stored in the array X (i.e: a matrix of explanatory variables). The indices of 
+#each factor must be provided in list format. The 'interactions' is a logical
+#option to provide the design matrix for all possible interactions within the 
+#set explanatory variables
+
 def model_matrix(X, factor_indexes, interactions=True):
     if type(X)==list:
         print("ERROR: X must be of type numpy.ndarray")
@@ -223,11 +227,8 @@ def model_matrix(X, factor_indexes, interactions=True):
         dummies=dummy(factor)
         dims=dummies.shape
         keepers=easySeq(dims[1]-1)
-        #print(keepers)
         dummies=dummies[:,keepers].transpose().tolist()
-        #print(dummies)
         MM=MM+dummies
-        #print(MM)
         
     else:
         MM=[[1]*len(Xt[0])]
@@ -248,13 +249,29 @@ def model_matrix(X, factor_indexes, interactions=True):
     intercept=[[1]*len(Xt[0])]
     Xp=intercept+Xp
     
-    print(Xp)
+    if interactions==True:
+        newlist=[[1]*len(Xt[0])]
     
+    
+        Xp_array=np.array(Xp[1:len(Xp)])
+        ind=easySeq(Xp_array.shape[0]-1)
+        for i in ind:
+            new=Xp_array[i,:]*Xp_array[Xp_array.shape[0]-1,:]
+            new=new.tolist()
+            newlist=newlist+[new]
         
+        combine=Xp+newlist[1:len(newlist)]
+        Design_Matrix=np.array(combine).transpose()
+    
+        return Design_Matrix
+    else:
+        Design_Matrix=np.array(Xp).transpose()
+        return Design_Matrix
 
 #=============================================================================
 #functio to simulate normal RV's. Simulates two IID normal RV's using the 
 #Box-Muller transformation
+
 def simnormal(n, mu=0, sigma=1):
     import random as rand
     import math 
@@ -271,6 +288,7 @@ def simnormal(n, mu=0, sigma=1):
 #=============================================================================
 #function to simulate exponential RV's. Simulates exponential Random Variables 
 #using the inverse CDF method
+
 def simexp(n, lamb=1):
     import random as rand
     import math 
@@ -283,6 +301,7 @@ def simexp(n, lamb=1):
 #a function to simulate Chi-Squared Random Variables (RV's). It will simulate 
 #independent RV's from a normal RV such that if X_i~N(0,1)
 #then Y_i=sum[x_i^2] from i =1 to n, then Y_i ~ Chi(n). 
+
 def simChisq(n, df=1):
     sample=[1]*n
     for k in range(n):
@@ -295,6 +314,7 @@ def simChisq(n, df=1):
 #=============================================================================
 #a function to simulate F random variables from the ratio of two independent
 #Chi-squared RV's with v1 and v2 degrees of freedom
+
 def simF(n, V1=1, V2=1):
     for k in range(n):
         chi1=simChisq(n, df=V1)
@@ -305,6 +325,7 @@ def simF(n, V1=1, V2=1):
 #=============================================================================
 #a function to simulate RV's from students t-distribution with desired degrees 
 #of freedom
+
 def simt(n, df=10):
     import math as m
     nn=df+1
@@ -319,6 +340,7 @@ def simt(n, df=10):
 #=============================================================================
 #a function to calculate the CDF probability of a given value from students t
 #distribution using Monte Carlo Integration
+
 def probt(t, df):
     n=100
     b=100
@@ -332,6 +354,7 @@ def probt(t, df):
 #=============================================================================
 #a function to calculate the CDF probability of a given value from the F 
 #distribution using Monte Carlo Integration 
+
 def probf(f, df1, df2):
     n=100
     b=100
@@ -345,6 +368,7 @@ def probf(f, df1, df2):
 #=============================================================================
 #a function to calculate the CDF probability of a given value from the normal 
 #distribution using Monte Carlo Integration 
+
 def probnorm(x, mu=0, sigma=1):
     n=1000
     b=100
@@ -358,6 +382,7 @@ def probnorm(x, mu=0, sigma=1):
 #=============================================================================
 #a function to calculate the CDF probability of a given value from the 
 #Exponential distribution using Monte Carlo Integration 
+
 def probexp(x, lam=1):
     n=1000
     b=100
@@ -371,6 +396,7 @@ def probexp(x, lam=1):
 #=============================================================================
 #a function to calculate the CDF probability of a given value from the 
 #Chi-Squared distribution using Monte Carlo Integration
+
 def probchi(x, df=1):
     n=1000
     b=100
