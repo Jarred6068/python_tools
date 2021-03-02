@@ -248,15 +248,7 @@ def model_matrix(X, factor_indexes, interactions=True):
     intercept=[[1]*len(Xt[0])]
     Xp=intercept+Xp
     
-    numerics=X[:,idx].transpose().tolist()
-    #print(numerics)
-    print(MM)
-    vec=[[0]*len(Xt[0])]
-    for i in easySeq(len(numerics)):
-        
-        for j in easySeq(len(MM)):
-            
-            vec[]
+    print(Xp)
     
         
 
