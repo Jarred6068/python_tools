@@ -139,7 +139,7 @@ class Regress:
     """implementation of Regression"""
     """Continuous Prediction Procedure:"""
     
-    def __init__(self, X, Y, idx):
+    def __init__(self, X, Y, idx, interactions=True):
         """ initialization of data attributes in "data" """
         
         """ X should be an array where each row represents the
@@ -151,13 +151,8 @@ class Regress:
             factors
         """
         
-        if(type(X)==list or type(Y)==list):
-            X=np.array(X)
-            Y=np.array(Y)
-            
-        self.design=
         
-        self.response=
+
         
         
         
