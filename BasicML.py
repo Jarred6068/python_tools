@@ -135,14 +135,29 @@ class KNN:
         self.Kappa=(observed-expected)/(1-expected)
             
 #Regression Algorithm
-class Reg():
+class Regress:
     """implementation of Regression"""
     """Continuous Prediction Procedure:"""
     
-    def __init__(self, data):
+    def __init__(self, X, Y, idx):
         """ initialization of data attributes in "data" """
-        """ data should be a list or numpy.array() """
         
+        """ X should be an array where each row represents the
+            values of the explanatory variable(s) for the i{th} 
+            observation
+        """
+        
+        """idx should contain the column indexes of X that are multi-level
+            factors
+        """
+        
+        if(type(X)==list or type(Y)==list):
+            X=np.array(X)
+            Y=np.array(Y)
+            
+        self.design=
+        
+        self.response=
         
         
         
