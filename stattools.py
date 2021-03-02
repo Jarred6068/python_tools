@@ -183,6 +183,28 @@ def crosstab(X, Y):
             
     return np.array(table)
 
+#=============================================================================
+#function to create a dummy/sparse-matrix representing the unique levels in 
+#the factor F. F must be a list
+def dummy(F):
+    if(type(F)!=list):
+        print("ERROR: input must be a list!")
+        
+    levels=list(set(F))
+    L=[1]*(len(F)*len(levels))
+    L=np.array(L).reshape((len(F),len(levels)))
+    
+    for j in easySeq(len(levels)):
+        
+        for i in easySeq(len(F)):
+            
+            if L[i,j]==levels[j]:
+                L[i,j]=1
+            else:
+                L[i,j]=0
+                
+    return L
+
 
 #=============================================================================
 #functio to simulate normal RV's. Simulates two IID normal RV's using the 
