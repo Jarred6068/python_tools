@@ -179,14 +179,17 @@ class Regress:
         XX=np.dot(self.design_matrix.transpose(), self.design_matrix)
         XX_inv=np.linalg.inv(XX)
         XX_invX=np.dot(XX_inv, self.design_matrix.transpose())
+        self.XX_inv=XX_inv
         
         #store model information
         self.coefficients=np.dot(XX_invX, self.Y_obs)
         self.predicted=np.dot(self.design_matrix, self.coefficients)
         self.residuals=self.Y_obs-self.predicted
-        self.SSE=sum(self.residuals**2)
-        self.SSR=sum()
-        self.XX_inv=XX_inv
+        self.SSE=np.dot(self.residuals.transpose(), self.residuals)
+        self.SSR=sum((self.predicted-st.mean(self.Y_obs))**2)
+        self.Error_variance=self.SSE/self.model_df
+        self.beta_cov=self.Error_variance*self.XX_inv
+        
         
         
     def general_test(self):
