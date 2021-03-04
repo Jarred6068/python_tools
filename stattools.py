@@ -342,8 +342,8 @@ def simt(n, df=10):
 #distribution using Monte Carlo Integration
 
 def probt(t, df):
-    n=100
-    b=100
+    n=1000
+    b=10
     p_list=[1]*b
     for k in range(b):
         T=simt(n, df=df)

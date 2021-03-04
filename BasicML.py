@@ -11,7 +11,7 @@ import random as rnd
 import math as m
 import pandas as pd
 
-#KNN algorithm:
+#--------------------------->>>KNN algorithm<<<-------------------------------
     
 class KNN:
     """implementation of the K-nearest Neighbor Algorithm"""
@@ -138,7 +138,7 @@ class KNN:
         
         
         
-#Regression Algorithm
+#-------------------------->>>Regression Algorithm<<<-------------------------
 class Regress:
     """implementation of Regression"""
     """Continuous Prediction Procedure:"""
@@ -223,7 +223,8 @@ class Regress:
         
         #output summary table
         self.summary=pd.DataFrame(tab, row_names, col_names)
-        
+        print("Model Summary and Coefficient Estimates:")
+        print(self.summary)
         
         
     def anova(self, null_hypoth=[], hypoth_matrix=[], test_interact=True):
