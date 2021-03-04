@@ -18,9 +18,12 @@ expl_var_names=["tl","ae","hl","ks","sv"]
 X=np.array(df[expl_var_names])
 Y=np.array(df["bh"])
 
-model=Regress(X,Y,[4])
-#print(model.design)
+model=Regress(X,Y,[4], interactions=False)
+print(model.design_matrix)
 
+model.fit()
+import matplotlib.pyplot as p
+p.plot(model.predicted, model.residuals, 'bo')+p.hlines(0, 30, 33)
 
 #iris dataset
 

@@ -133,7 +133,10 @@ class KNN:
         observed=1-self.Error
         expected=sum( (rowsum/total)*(colsum/total) )
         self.Kappa=(observed-expected)/(1-expected)
-            
+           
+        
+        
+        
 #Regression Algorithm
 class Regress:
     """implementation of Regression"""
@@ -150,7 +153,76 @@ class Regress:
         """idx should contain the column indexes of X that are multi-level
             factors
         """
+        #obtain the design matrix for the model and store pieces
+        self.design_matrix=st.model_matrix(X, idx, interactions)
+        self.Y_obs=Y
+        self.model_df=X.shape[0]-self.design_matrix.shape[1]
         
+        #obtain the total number of interaction coefficients
+        #(used for hypothesis testing and anova calculations)
+        if interactions==True:
+            num_fac=len(idx)
+            print(num_fac)
+            levels=[0]*1000
+            for i in idx:
+                levels[i]=len(set(X[:,i]))-1
+            
+            num_interact=(X.shape[1]-num_fac)*sum(levels)
+            print(num_interact)
+            self.num_interactions=num_interact
+        
+        
+    def fit(self):
+        """fits the linear model by least squares"""
+        """Key model aspects are stored"""
+        #compute the model by least-squares fit
+        XX=np.dot(self.design_matrix.transpose(), self.design_matrix)
+        XX_inv=np.linalg.inv(XX)
+        XX_invX=np.dot(XX_inv, self.design_matrix.transpose())
+        
+        #store model information
+        self.coefficients=np.dot(XX_invX, self.Y_obs)
+        self.predicted=np.dot(self.design_matrix, self.coefficients)
+        self.residuals=self.Y_obs-self.predicted
+        self.SSE=sum(self.residuals**2)
+        self.SSR=sum()
+        self.XX_inv=XX_inv
+        
+        
+    def general_test(self):
+        """tests the coefficients of the linear model"""
+        
+    def anova(self, null_hypoth=[], hypoth_matrix=[], test_interact=True):
+        
+        """tests on the coefficients and submodels"""
+        
+        """if interactions_test=TRUE all interaction
+           submodels ares tested
+        """
+        """user has the option to specify specific contrasts
+           by inputing the null hypothesis vector and general 
+           hypothesis matrix
+        """
+        #if a specific contrast matrix or hypothesis is not specified 
+        #conduct general linear hypothesis tests
+        if not hypoth_matrix:
+            hypoth_matrix=np.diag([1]*len(self.coefficients))
+            
+        
+        if not null_hypoth:
+            print("H0: Beta = 0")
+            
+            LB=np.dot(hypoth_matrix, self.coefficients)
+            C1=np.dot(hypoth_matrix, self.XX_inv)
+            C2=np.dot(C1, hypoth_matrix.transpose)
+            
+            numerator=np.dot(np.dot(LB,C2),LB.transpose())
+            
+        
+        
+        
+        
+
         
 
         
