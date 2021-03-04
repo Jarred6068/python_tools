@@ -9,6 +9,7 @@ import numpy as np
 import stattools as st
 import random as rnd
 import math as m
+import pandas as pd
 
 #KNN algorithm:
     
@@ -145,7 +146,7 @@ class Regress:
     def __init__(self, X, Y, idx, interactions=True):
         """ initialization of data attributes in "data" """
         
-        """ X should be an array where each row represents the
+        """ X should be an np.array where each row represents the
             values of the explanatory variable(s) for the i{th} 
             observation
         """
@@ -156,6 +157,8 @@ class Regress:
         #obtain the design matrix for the model and store pieces
         self.design_matrix=st.model_matrix(X, idx, interactions)
         self.Y_obs=Y
+        self.K=self.design_matrix.shape[1]-1
+        self.n=X.shape[0]
         self.model_df=X.shape[0]-self.design_matrix.shape[1]
         
         #obtain the total number of interaction coefficients
@@ -181,7 +184,7 @@ class Regress:
         XX_invX=np.dot(XX_inv, self.design_matrix.transpose())
         self.XX_inv=XX_inv
         
-        #store model information
+        #store model information and parameter estimates
         self.coefficients=np.dot(XX_invX, self.Y_obs)
         self.predicted=np.dot(self.design_matrix, self.coefficients)
         self.residuals=self.Y_obs-self.predicted
@@ -189,11 +192,39 @@ class Regress:
         self.SSR=sum((self.predicted-st.mean(self.Y_obs))**2)
         self.Error_variance=self.SSE/self.model_df
         self.beta_cov=self.Error_variance*self.XX_inv
+        bcov_list=np.diag(self.beta_cov).tolist()
+        self.beta_SE=np.array([m.sqrt(i) for i in bcov_list])
         
         
+    def T_test(self):
         
-    def general_test(self):
         """tests the coefficients of the linear model"""
+        
+        #preallocate space
+        T_observed=[0]*(self.K+1)
+        P_value=[0]*(self.K+1)
+        names=["Beta_"]*(self.K+1)
+        iters=st.easySeq(self.K+1)
+        iters=[str(i) for i in iters]
+        row_names=["A"]*(self.K+1)
+        col_names=["T_obs", "P.value","SE"]
+        
+        #calculate test stats and pvalues
+        for i in st.easySeq(self.K+1):
+            T=self.coefficients[i]/self.beta_SE[i]
+            T_observed[i]=T
+            P=2*(1-st.probt(abs(T), self.model_df))
+            P_value[i]=P
+            col=[names[i]+iters[i]]
+            row_names[i]=" ".join(col)
+        
+        tab=[T_observed]+[P_value]+[self.beta_SE.tolist()]
+        tab=np.array(tab).transpose().tolist()
+        
+        #output summary table
+        self.summary=pd.DataFrame(tab, row_names, col_names)
+        
+        
         
     def anova(self, null_hypoth=[], hypoth_matrix=[], test_interact=True):
         

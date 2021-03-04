@@ -25,6 +25,9 @@ model.fit()
 import matplotlib.pyplot as p
 p.plot(model.predicted, model.residuals, 'bo')+p.hlines(0, 30, 33)
 
+model.T_test()
+
+
 #iris dataset
 
 df2 = pd.read_excel (r'C:\Users\Bruin\Desktop\Data Analysis Toolbox\Manley Data for practice\iris.xlsx')
