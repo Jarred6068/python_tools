@@ -23,7 +23,7 @@ print(model.design_matrix)
 
 model.fit()
 import matplotlib.pyplot as p
-p.plot(model.predicted, model.residuals, 'bo')+p.hlines(0, 30, 33)
+#p.plot(model.predicted, model.residuals, 'bo')+p.hlines(0, 30, 33)
 
 model.T_test()
 
@@ -37,3 +37,20 @@ expl_var_names2=['Sepal.Length', 'Sepal.Width', 'Petal.Length', 'Petal.Width',
 
 X2=np.array(df2[expl_var_names2[1:len(expl_var_names2)]])
 Y2=np.array(df2[expl_var_names2[0]])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#prestige data
+df = pd.read_csv (r'C:\Users\Bruin\Desktop\Data Analysis Toolbox\Manley Data for practice\prestige.csv') #place "r" before the path string to address special character, such as '\'. Don't forget to put the file name at the end of the path + '.xlsx'
+print (df)

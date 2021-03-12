@@ -238,20 +238,21 @@ class Regress:
            by inputing the null hypothesis vector and general 
            hypothesis matrix
         """
-        #if a specific contrast matrix or hypothesis is not specified 
-        #conduct general linear hypothesis tests
-        if not hypoth_matrix:
-            hypoth_matrix=np.diag([1]*len(self.coefficients))
+        # #if a specific contrast matrix or hypothesis is not specified 
+        # #conduct general linear hypothesis tests
+        # if not hypoth_matrix:
+        #     hypoth_matrix=np.diag([1]*len(self.coefficients))
             
         
-        if not null_hypoth:
-            print("H0: Beta = 0")
+        # if not null_hypoth:
+        #     print("H0: Beta = 0")
             
-            LB=np.dot(hypoth_matrix, self.coefficients)
-            C1=np.dot(hypoth_matrix, self.XX_inv)
-            C2=np.dot(C1, hypoth_matrix.transpose)
+        #     LB=np.dot(hypoth_matrix, self.coefficients)
+        #     C1=np.dot(hypoth_matrix, self.XX_inv)
+        #     C2=np.dot(C1, hypoth_matrix.transpose)
             
-            numerator=np.dot(np.dot(LB,C2),LB.transpose())
+        #     numer=np.dot(np.dot(LB,C2),LB.transpose())
+        #     denom=np.sum()
             
         
         
